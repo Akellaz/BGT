@@ -1,0 +1,65 @@
+sound cube;
+sound cube_mark;
+file n;
+int points = 0;
+int count;
+int points2 = 0;
+int count2;
+string itog;
+
+void main() {
+
+string name = input_box("Игра Кубик", "Привет! Меня зовут Марк. Давайте поиграем в кубик. Как Вас зовут?");
+alert("Отлично!","Приятно познакомиться, "+name+". Для того что бы бросить кубик, просто нажмите пробел.\nДля выхода из игры нажмите Esc\nНачнём?");
+
+cube.load("sounds/kosti.wav");
+cube_mark.load("sounds/mark_kosti.wav");
+show_game_window("Игра в кубик");
+
+while (true) {
+if (key_pressed(KEY_SPACE)) {
+
+//Вы бросаете кубик
+cube.stop();
+cube.play();
+count = random(1,6);
+points += count;
+alert("Вы бросили кубик","Выпало: "+count);
+
+//Теперь Марк бросает кубик
+cube_mark.stop();
+cube_mark.play();
+count2 = random(1,6);
+points2+=count2;
+alert("Марк бросил кубик", "Выпало: "+count2);
+
+if (count>count2) {alert("Ура!", "Вы победили Марка");}
+if (count<count2) {alert("Эх!", "Марку повезло больше");}
+if (count == count2) {alert("Во дела!", "Силы оказались равны!");}
+}
+
+
+if (key_pressed(KEY_ESCAPE)) {
+
+int check = question("Выход","Вы хотите сохранить результаты?");
+if (check == 2) {exit();}
+
+if (check == 1) {
+
+if (points>points2) {itog = "Вы лидируете";} 
+if (points<points2) {itog = "Марк лидирует";}
+if (points == points2) {itog = "Силы равны";}
+
+n.open("Результаты.txt","w");
+n.write(name+" набрал: "+points+" \nМарк набрал: "+points2+"\n"+itog);
+n.close();
+exit();
+}
+
+}
+}
+
+
+
+
+}
